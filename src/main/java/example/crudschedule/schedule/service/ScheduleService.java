@@ -8,6 +8,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ScheduleService {
@@ -44,5 +46,14 @@ public class ScheduleService {
                 schedule.getCreatedAt(),
                 schedule.getModifiedAt()
         );
+    }
+
+    // 일정 전체 조회
+    public List<ScheduleResponse> getAllSchedules() {
+
+        return scheduleRepository.findAll()
+                .stream()
+                .map(ScheduleResponse::toDto)
+                .toList();
     }
 }
