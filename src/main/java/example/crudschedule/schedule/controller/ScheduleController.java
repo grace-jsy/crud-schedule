@@ -2,16 +2,14 @@ package example.crudschedule.schedule.controller;
 
 import example.crudschedule.schedule.dto.ScheduleCreateRequest;
 import example.crudschedule.schedule.dto.ScheduleResponse;
+import example.crudschedule.schedule.entity.Schedule;
 import example.crudschedule.schedule.service.ScheduleService;
 import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Getter
 @RequiredArgsConstructor // 꼭 필요한 의존성만 생성자로 주입하게 해 주는 어노테이션
@@ -27,5 +25,14 @@ public class ScheduleController {
         ScheduleResponse scheduleResponse = scheduleService.create(request.getTitle(), request.getContent());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(scheduleResponse);
+    }
+
+    // 일정 단건 조회
+    @GetMapping("/schedules/{id}")
+    public ResponseEntity<ScheduleResponse> getSchedule(@PathVariable Long id) {
+
+        ScheduleResponse scheduleResponse = scheduleService.getSchedule(id);
+
+        return new ResponseEntity<>(scheduleResponse, HttpStatus.OK);
     }
 }

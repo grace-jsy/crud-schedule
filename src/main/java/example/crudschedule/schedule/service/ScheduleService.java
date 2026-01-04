@@ -3,6 +3,7 @@ package example.crudschedule.schedule.service;
 import example.crudschedule.schedule.dto.ScheduleResponse;
 import example.crudschedule.schedule.entity.Schedule;
 import example.crudschedule.schedule.repository.ScheduleRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,22 @@ public class ScheduleService {
                 savedSchedule.getContent(),
                 savedSchedule.getCreatedAt(),
                 savedSchedule.getCreatedAt()
+        );
+    }
+
+    // 일정 단건 조회
+    public ScheduleResponse getSchedule(Long id) {
+
+        Schedule schedule = scheduleRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Schedule not found")
+        );
+
+        return new ScheduleResponse(
+                schedule.getId(),
+                schedule.getTitle(),
+                schedule.getContent(),
+                schedule.getCreatedAt(),
+                schedule.getModifiedAt()
         );
     }
 }
