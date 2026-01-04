@@ -1,0 +1,31 @@
+package example.crudschedule.schedule.controller;
+
+import example.crudschedule.schedule.dto.ScheduleCreateRequest;
+import example.crudschedule.schedule.dto.ScheduleResponse;
+import example.crudschedule.schedule.service.ScheduleService;
+import jakarta.transaction.Transactional;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@Getter
+@RequiredArgsConstructor // 꼭 필요한 의존성만 생성자로 주입하게 해 주는 어노테이션
+@RequestMapping("/schedules")
+public class ScheduleController {
+
+    private final ScheduleService scheduleService;
+
+    // 일정 생성
+    @PostMapping
+    public ResponseEntity<ScheduleResponse> create(@RequestBody ScheduleCreateRequest request) {
+
+        ScheduleResponse scheduleResponse = scheduleService.create(request.getTitle(), request.getContent());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(scheduleResponse);
+    }
+}
